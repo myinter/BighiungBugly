@@ -15,6 +15,7 @@
 #include <string.h>
 #include <mach-o/dyld.h>
 #include <mach-o/nlist.h>
+#import "fishhook.h"
 
 #if defined(__LP64__)
 #define TRACE_FMT         "%-4d%-31s 0x%016lx %s + %lu"
@@ -81,13 +82,46 @@ void RegisterSignalHandler(void);
 void HandleException(NSException *exception);
 
 @implementation BighiungBugly
+
+static int (*orig_NSSetUncaughtExceptionHandler)(NSUncaughtExceptionHandler * _Nullable) = NULL;
+
+void Bugly_NSSetUncaughtExceptionHandler(NSUncaughtExceptionHandler * _Nullable handler){
+    //阻止Bugly以外的代码注册ExceptionHandler
+    
+    NSArray<NSNumber *> *returnAddresses = [NSThread callStackReturnAddresses];
+    
+    BOOL isFromBugly = NO;
+    for (NSNumber *address in returnAddresses) {
+        void (*addressValue)() = (void (*)())[address pointerValue];
+        if (addressValue > registerExceptionHandler && addressValue < guardNullFunc) {
+            //返回地址位于 registerExceptionHandler 和 guardNullFunc 之间，表明来自 bugly的注册
+            isFromBugly = YES;
+            break;
+        }
+    }
+    if (isFromBugly) {
+        //调用真实的 NSSetUncaughtExceptionHandler
+        orig_NSSetUncaughtExceptionHandler(handler);
+    }
+}
 +(void)load
+{
+    registerExceptionHandler();
+}
+
+void registerExceptionHandler()
 {
     //记录下主线程的id
     main_thread_id = mach_thread_self();
     RegisterSignalHandler();
     [[NSThread currentThread]setName:@"main thread"];
+    //hook NSSetUncaughtExceptionHandler 方法，避免其他模块注册侦听干扰bugly
+    rebind_symbols((struct rebinding[1]){{"NSSetUncaughtExceptionHandler", Bugly_NSSetUncaughtExceptionHandler, (void *)&orig_NSSetUncaughtExceptionHandler}}, 1);
     NSSetUncaughtExceptionHandler(HandleException);
+}
+
+void guardNullFunc(){
+    
 }
 
 @end

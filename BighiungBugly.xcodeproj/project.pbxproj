@@ -15,6 +15,7 @@
 		4031EF6424B9C6230021C543 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4031EF6224B9C6230021C543 /* LaunchScreen.storyboard */; };
 		4031EF6724B9C6230021C543 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4031EF6624B9C6230021C543 /* main.m */; };
 		4031EF6F24B9C6490021C543 /* BighiungBugly.m in Sources */ = {isa = PBXBuildFile; fileRef = 4031EF6E24B9C6490021C543 /* BighiungBugly.m */; };
+		40C8CB9C2549B7A700C3D464 /* fishhook.c in Sources */ = {isa = PBXBuildFile; fileRef = 40C8CB9B2549B7A700C3D464 /* fishhook.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,8 @@
 		4031EF6624B9C6230021C543 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		4031EF6D24B9C6490021C543 /* BighiungBugly.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BighiungBugly.h; sourceTree = "<group>"; };
 		4031EF6E24B9C6490021C543 /* BighiungBugly.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BighiungBugly.m; sourceTree = "<group>"; };
+		40C8CB9A2549B7A700C3D464 /* fishhook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fishhook.h; sourceTree = "<group>"; };
+		40C8CB9B2549B7A700C3D464 /* fishhook.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fishhook.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +67,8 @@
 		4031EF5324B9C6200021C543 /* BighiungBugly */ = {
 			isa = PBXGroup;
 			children = (
+				40C8CB9B2549B7A700C3D464 /* fishhook.c */,
+				40C8CB9A2549B7A700C3D464 /* fishhook.h */,
 				4031EF5424B9C6200021C543 /* AppDelegate.h */,
 				4031EF5524B9C6200021C543 /* AppDelegate.m */,
 				4031EF5724B9C6200021C543 /* SceneDelegate.h */,
@@ -155,6 +160,7 @@
 				4031EF5624B9C6200021C543 /* AppDelegate.m in Sources */,
 				4031EF6724B9C6230021C543 /* main.m in Sources */,
 				4031EF5924B9C6200021C543 /* SceneDelegate.m in Sources */,
+				40C8CB9C2549B7A700C3D464 /* fishhook.c in Sources */,
 				4031EF6F24B9C6490021C543 /* BighiungBugly.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
