@@ -30,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 //libdyld.dylib                   0x10ea9c92d start + 1
 @interface BighiungBugly : NSObject
 @property (nonatomic,copy) NSString *imageName; //  包/镜像名
-@property (nonatomic,copy) NSString *address; // 函数地址
+@property (nonatomic,assign) void *address; // 函数地址
 @property (nonatomic,copy) NSString *functionName; // 函数 or 方法名
 @property (nonatomic,copy) NSNumber *offset; // 是函数中执行到的指令相对于函数开头的偏移量
 @property (nonatomic,copy) NSString *descriptionText; // 调用栈中某一个元素的表示字符串

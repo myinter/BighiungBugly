@@ -92,8 +92,8 @@ void Bugly_NSSetUncaughtExceptionHandler(NSUncaughtExceptionHandler * _Nullable 
     
     BOOL isFromBugly = NO;
     for (NSNumber *address in returnAddresses) {
-        void (*addressValue)() = (void (*)())[address pointerValue];
-        if (addressValue > registerExceptionHandler && addressValue < guardNullFunc) {
+        void (*addressValue)(void) = (void (*)(void))[address pointerValue];
+        if (addressValue > ((void (*)(void))registerExceptionHandler) && addressValue < guardNullFunc) {
             //返回地址位于 registerExceptionHandler 和 guardNullFunc 之间，表明来自 bugly的注册
             isFromBugly = YES;
             break;
@@ -395,13 +395,19 @@ BighiungBugly* BighiungBuglyFromDLInfo(
     }
     BighiungBugly *bugly = [BighiungBugly new];
     bugly.imageName = [NSString stringWithFormat:@"%s",fname];
-    bugly.address = [NSString stringWithFormat:@"%p",(void *)address];
+    bugly.address = address;
+
     bugly.functionName = [NSString stringWithFormat:@"%s",sname];
     bugly.offset = @(offset);
+    
+#if __LP64__ || 0 || NS_BUILD_32_LIKE_64
+    bugly.descriptionText = [NSString stringWithFormat:@"%-30s  0x%016" PRIxPTR " %s + %lu\n" ,fname, (uintptr_t)address, sname, offset];
+#else
     bugly.descriptionText = [NSString stringWithFormat:@"%-30s  0x%08" PRIxPTR " %s + %lu\n" ,fname, (uintptr_t)address, sname, offset];
+#endif
+
     return bugly;
 }
-
 
 NSString* bs_logBacktraceEntry(const int entryNum,
                                const uintptr_t address,
